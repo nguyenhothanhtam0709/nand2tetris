@@ -1,0 +1,97 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/1/Mux16.hdl
+/**
+ * 16-bit multiplexor: 
+ * for i = 0, ..., 15:
+ * if (sel = 0) out[i] = a[i], else out[i] = b[i]
+ */
+CHIP Mux16 {
+    IN a[16], b[16], sel;
+    OUT out[16];
+
+    PARTS:
+    // Shared NOT sel
+    Not(in=sel, out=nosel);
+
+    // Bit 0
+    Nand(a=a[0], b=nosel, out=a1);
+    Nand(a=b[0], b=sel,   out=b1);
+    Nand(a=a1,   b=b1,    out=out[0]);
+
+    // Bit 1
+    Nand(a=a[1], b=nosel, out=a2);
+    Nand(a=b[1], b=sel,   out=b2);
+    Nand(a=a2,   b=b2,    out=out[1]);
+
+    // Bit 2
+    Nand(a=a[2], b=nosel, out=a3);
+    Nand(a=b[2], b=sel,   out=b3);
+    Nand(a=a3,   b=b3,    out=out[2]);
+
+    // Bit 3
+    Nand(a=a[3], b=nosel, out=a4);
+    Nand(a=b[3], b=sel,   out=b4);
+    Nand(a=a4,   b=b4,    out=out[3]);
+
+    // Bit 4
+    Nand(a=a[4], b=nosel, out=a5);
+    Nand(a=b[4], b=sel,   out=b5);
+    Nand(a=a5,   b=b5,    out=out[4]);
+
+    // Bit 5
+    Nand(a=a[5], b=nosel, out=a6);
+    Nand(a=b[5], b=sel,   out=b6);
+    Nand(a=a6,   b=b6,    out=out[5]);
+
+    // Bit 6
+    Nand(a=a[6], b=nosel, out=a7);
+    Nand(a=b[6], b=sel,   out=b7);
+    Nand(a=a7,   b=b7,    out=out[6]);
+
+    // Bit 7
+    Nand(a=a[7], b=nosel, out=a8);
+    Nand(a=b[7], b=sel,   out=b8);
+    Nand(a=a8,   b=b8,    out=out[7]);
+
+    // Bit 8
+    Nand(a=a[8], b=nosel, out=a9);
+    Nand(a=b[8], b=sel,   out=b9);
+    Nand(a=a9,   b=b9,    out=out[8]);
+
+    // Bit 9
+    Nand(a=a[9], b=nosel, out=a10);
+    Nand(a=b[9], b=sel,   out=b10);
+    Nand(a=a10,  b=b10,   out=out[9]);
+
+    // Bit 10
+    Nand(a=a[10], b=nosel, out=a11);
+    Nand(a=b[10], b=sel,   out=b11);
+    Nand(a=a11,   b=b11,   out=out[10]);
+
+    // Bit 11
+    Nand(a=a[11], b=nosel, out=a12);
+    Nand(a=b[11], b=sel,   out=b12);
+    Nand(a=a12,   b=b12,   out=out[11]);
+
+    // Bit 12
+    Nand(a=a[12], b=nosel, out=a13);
+    Nand(a=b[12], b=sel,   out=b13);
+    Nand(a=a13,   b=b13,   out=out[12]);
+
+    // Bit 13
+    Nand(a=a[13], b=nosel, out=a14);
+    Nand(a=b[13], b=sel,   out=b14);
+    Nand(a=a14,   b=b14,   out=out[13]);
+
+    // Bit 14
+    Nand(a=a[14], b=nosel, out=a15);
+    Nand(a=b[14], b=sel,   out=b15);
+    Nand(a=a15,   b=b15,   out=out[14]);
+
+    // Bit 15
+    Nand(a=a[15], b=nosel, out=a16);
+    Nand(a=b[15], b=sel,   out=b16);
+    Nand(a=a16,   b=b16,   out=out[15]);
+}
