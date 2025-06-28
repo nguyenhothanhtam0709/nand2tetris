@@ -7,7 +7,7 @@ CHIP Xnor {
     OUT out;
     
     PARTS:
-    Xor(a=a, b=b, out=axorb);
+    Or(a=a, b=b, out=aorb);
     Nand(a=a, b=b, out=anandb);
-    Nand(a=axorb, b=anandb, out=out);
+    Nand(a=aorb, b=anandb, out=out);
 }   
