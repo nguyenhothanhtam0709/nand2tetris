@@ -1,5 +1,5 @@
 /**
- * Nor gate:
+ * Imply gate:
  * if (a = 1 and b = 0) out = 0, else out = 1 
  */
 CHIP Imply {

@@ -1,5 +1,5 @@
 /**
- * And gate:
+ * Xnor gate:
  * if (a = b) out = 1, else out = 0 
  */
 CHIP Xnor {

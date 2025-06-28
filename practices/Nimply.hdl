@@ -1,0 +1,12 @@
+/**
+ * Nimply gate:
+ * if (a = 1 and b = 0) out = 1, else out = 0 
+ */
+CHIP Nimply {
+    IN a, b;
+    OUT out;
+    
+    PARTS:
+    Not(in=b, out=nb);
+    And(a=a, b=nb, out=out);
+}
