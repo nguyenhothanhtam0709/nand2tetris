@@ -1,5 +1,5 @@
 /**
- * And gate:
+ * Nor gate:
  * if (a = 0 and b = 0) out = 1, else out = 0 
  */
 CHIP Nor {
