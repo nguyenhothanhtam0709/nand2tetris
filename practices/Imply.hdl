@@ -1,0 +1,12 @@
+/**
+ * Nor gate:
+ * if (a = 1 and b = 0) out = 0, else out = 1 
+ */
+CHIP Imply {
+    IN a, b;
+    OUT out;
+    
+    PARTS:
+    Not(in=b, out=nb);
+    Nand(a=a, b=nb, out=out);
+}
