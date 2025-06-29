@@ -41,6 +41,50 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
+    /** Alternative Implementation
+
+    // Zeroing inputs
+    Mux16(a=x, b=false, sel=zx, out=zxOut);
+    Mux16(a=y, b=false, sel=zy, out=zyOut);
+
+    // Negating inputs
+    Not16(in=zxOut, out=notX);
+    Mux16(a=zxOut, b=notX, sel=nx, out=x1);
+
+    Not16(in=zyOut, out=notY);
+    Mux16(a=zyOut, b=notY, sel=ny, out=y1);
+
+    // Function: Add or And
+    Add16(a=x1, b=y1, out=addOut);
+    And16(a=x1, b=y1, out=andOut);
+    Mux16(a=andOut, b=addOut, sel=f, out=preOut);
+
+    // Final negation
+    Not16(in=preOut, out=notOut);
+    Mux16(a=preOut, b=notOut, sel=no,
+    out[0..7]=internalOutLow,
+    out[8..14]=internalOutHigh,
+    out[15]=internalOutHighest);
+
+    // zr
+	Or8Way(in=internalOutLow, out=low);
+	Or8Way(in[0..6]=internalOutHigh, in[7]=internalOutHighest, out=high);
+	Or(a=low, b=high, out=anySet);
+	Not(in=anySet, out=zr);
+    
+    // ng: MSB of output
+    And(a=internalOutHighest, b=true, out=ng);
+
+    // internal wire
+    And16(
+    a[0..7]=internalOutLow,
+    a[8..14]=internalOutHigh,
+    a[15]=internalOutHighest,
+    b=true,
+    out=out);
+    /*
+
+
     Not(in=zx, out=nzx);
     Not(in=zy, out=nzy);
 
