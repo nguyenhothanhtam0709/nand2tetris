@@ -1,0 +1,15 @@
+/**
+ * 16-bit subtractor: Subtracts two 16-bit two's complement values.
+ * The most significant carry bit is ignored.
+ *
+ * Computes a - b
+ */
+CHIP Sub16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+    Not16(in=b, out=notb);
+    Inc16(in=notb, out=nb);
+    Add16(a=a, b=nb, out=out);
+}
