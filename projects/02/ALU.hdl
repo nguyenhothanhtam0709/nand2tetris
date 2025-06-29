@@ -82,7 +82,7 @@ CHIP ALU {
     a[15]=internalOutHighest,
     b=true,
     out=out);
-    /*
+    */
 
 
     Not(in=zx, out=nzx);
