@@ -9,7 +9,6 @@ CHIP Sub16 {
     OUT out[16];
 
     PARTS:
-    Not16(in=b, out=notb);
-    Inc16(in=notb, out=nb);
+    Neg16(in=b, out=nb);
     Add16(a=a, b=nb, out=out);
 }

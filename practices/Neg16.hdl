@@ -1,0 +1,12 @@
+/**
+ * 16-bit arithmetic negative gate:
+ * out = -in
+ */
+CHIP Neg16 {
+    IN in[16];
+    OUT out[16];
+    
+    PARTS:
+    Not16(in=in, out=notin);
+    Inc16(in=notin, out=out);
+}
