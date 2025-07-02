@@ -1,0 +1,16 @@
+/**
+ * 64-bit register:
+ * If load is asserted, the register's value is set to in;
+ * Otherwise, the register maintains its current value:
+ * if (load(t)) out(t+1) = int(t), else out(t+1) = out(t)
+ */
+CHIP Register64 {
+    IN in[64], load;
+    OUT out[64];
+
+    PARTS:
+    Register16(in=in[0..15], load=load, out=out[0..15]);
+    Register16(in=in[16..31], load=load, out=out[16..31]);
+    Register16(in=in[32..47], load=load, out=out[32..47]);
+    Register16(in=in[48..63], load=load, out=out[48..63]);
+}
