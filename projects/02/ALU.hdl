@@ -64,7 +64,8 @@ CHIP ALU {
     Mux16(a=preOut, b=notOut, sel=no,
     out[0..7]=internalOutLow,
     out[8..14]=internalOutHigh,
-    out[15]=internalOutHighest);
+    out[15]=internalOutHighest,
+    out=out);
 
     // zr
 	Or8Way(in=internalOutLow, out=low);
@@ -74,14 +75,6 @@ CHIP ALU {
     
     // ng: MSB of output
     And(a=internalOutHighest, b=true, out=ng);
-
-    // internal wire
-    And16(
-    a[0..7]=internalOutLow,
-    a[8..14]=internalOutHigh,
-    a[15]=internalOutHighest,
-    b=true,
-    out=out);
     */
 
 
@@ -142,7 +135,8 @@ CHIP ALU {
     b[12]=no, b[13]=no, b[14]=no, b[15]=no,
     out[0..7]=internalOutLow,
     out[8..14]=internalOutHigh,
-    out[15]=internalOutHighest
+    out[15]=internalOutHighest,
+    out=out
     );
 
     // zr
@@ -153,12 +147,4 @@ CHIP ALU {
     
     // ng: MSB of output
     And(a=internalOutHighest, b=true, out=ng);
-
-    // internal wire
-    And16(
-    a[0..7]=internalOutLow,
-    a[8..14]=internalOutHigh,
-    a[15]=internalOutHighest,
-    b=true,
-    out=out);
 }
