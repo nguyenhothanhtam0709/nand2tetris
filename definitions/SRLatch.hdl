@@ -1,0 +1,19 @@
+/**
+ * Set/Reset (S/R) Latch
+ *
+ * Truth table:
+ * Input S	    Input R	    Output Q
+ * 0	        0	        Previous State
+ * 0	        1	        0
+ * 1	        0	        1
+ * 1	        1	        0 (Invalid)
+ * 
+ */
+CHIP SRLatch {
+    IN s, r;
+    OUT q, nq /* negative q */;
+
+    PARTS:
+    Xor(a=r, b=nand2, out=nand1, out=q);
+    Xor(a=z, b=nand1, out=nand2, out=nq);
+}

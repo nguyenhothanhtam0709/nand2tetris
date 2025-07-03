@@ -1,0 +1,22 @@
+/**
+ * D Latch
+ * 
+ * Truth table:
+ * E	D	Q	Description
+ * 0	X	Q	Memory (no change)
+ * 1	0	0	Reset Q to 0
+ * 1	1	1	Set Q to 1
+ *
+ */
+CHIP DLatch {
+    IN d, e;
+    OUT q, nq;
+
+    PARTS:
+    Not(in=d, out=nd);
+    And(a=nd, b=e, out=r);
+
+    And(a=d, b=e, out=s);
+
+    SRLatch(s=s, r=r, q=q, nq=nq);
+}
