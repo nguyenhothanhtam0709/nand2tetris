@@ -8,3 +8,46 @@
 // The algorithm is based on repetitive addition.
 
 //// Replace this comment with your code.
+
+//// Pseudo code
+// i=1
+//
+// LOOP:
+//    if i > [R1] goto END
+//    RAM[R2] += RAM[R0]
+//    i += 1
+//    goto LOOP
+//    
+// END:
+//    goto END
+////
+
+    @R2
+    M=0
+    
+    @i
+    M=1
+
+(LOOP)
+    @i
+    D=M
+    @R1
+    D=D-M
+    @END
+    D;JGT
+
+    @R0
+    D=M
+    @R2
+    M=D+M
+
+    @i
+    M=M+1
+
+    @LOOP
+    0;JMP
+
+
+(END)
+    @END
+    0;JMP
