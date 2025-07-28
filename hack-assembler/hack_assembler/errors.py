@@ -23,3 +23,12 @@ class UnexpectedTokenError(ParserError):
         super().__init__(
             f'Unexpected token {token}' if expected is None
             else f'Expect {expected.value if isinstance(expected, TokenType) else ','.join(map(str, expected))} - provide {token}')
+
+
+class SemanticError(Error):
+    pass
+
+
+class DuplicatedSymbolError(SemanticError):
+    def __init__(self, symbol_name: str):
+        super().__init__(f'Duplicated symbol {symbol_name}')

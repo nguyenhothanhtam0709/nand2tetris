@@ -1,6 +1,7 @@
 from hack_assembler.ast_visitor import NodeVisitor
 from hack_assembler.ast import ProgramNode, AInstructionNode, CInstructionNode, SymbolDeclarationNode
 from hack_assembler.symbol_table import SymbolTable, DeclaredSymbol
+from hack_assembler.errors import DuplicatedSymbolError
 
 
 class SemanticAnalyzer(NodeVisitor):
@@ -30,7 +31,6 @@ class SemanticAnalyzer(NodeVisitor):
     def _visit_SymbolDeclarationNode(self, node: SymbolDeclarationNode) -> None:
         if self._symbol_table.lookup(node.token.value) is None:
             self._symbol_table.define(DeclaredSymbol(
-                name=node.token.value, value=self._current_line+1))
+                name=node.token.value, value=self._current_line))
         else:
-            # raise duplicated symbol error
-            pass
+            raise DuplicatedSymbolError(node.token.value)
