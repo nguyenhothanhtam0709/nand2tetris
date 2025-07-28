@@ -2,7 +2,7 @@ from typing import cast
 import json
 from hack_assembler.lexer import Lexer
 from hack_assembler.parser import Parser
-from hack_assembler.ast import ProgramNode
+from hack_assembler.semantic_analyzer import SemanticAnalyzer
 
 if __name__ == '__main__':
     code = """@R0
@@ -31,6 +31,6 @@ if __name__ == '__main__':
     )
     parser = Parser(lexer=lexer)
 
-    node = parser.parse()
-    print(node)
-    
+    ast = parser.parse()
+    sematic_analyzer = SemanticAnalyzer(ast=ast)
+    sematic_analyzer.analyze()

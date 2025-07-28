@@ -1,6 +1,6 @@
 from hack_assembler.tokens import Token, TokenType
 from hack_assembler.lexer import Lexer
-from hack_assembler.ast import AstNode, ProgramNode, SymbolDeclaration, AInstructionNode, CInstructionNode
+from hack_assembler.ast import AstNode, ProgramNode, SymbolDeclarationNode, AInstructionNode, CInstructionNode
 from hack_assembler.errors import UnexpectedTokenError
 from hack_assembler.constants import DEST_MNEMONICS, COMP_MNEMONICS, JUMP_MNEMONICS
 
@@ -31,7 +31,7 @@ class Parser(object):
                     token = self._current_token
                     self._eat(TokenType.SYMBOL)
                     self._eat(TokenType.RPAREN)
-                    instructions.append(SymbolDeclaration(token=token))
+                    instructions.append(SymbolDeclarationNode(token=token))
 
                 case TokenType.AT_SIGN:
                     # A instruction

@@ -51,7 +51,7 @@ class CInstructionNode(AstNode):
         return f'{self.type.value} {f'{self.dest.value}=' if self.dest is not None else ''}{self.comp.value}{f';{self.jump.value}' if self.jump is not None else ''}'
 
 
-class SymbolDeclaration(AstNode):
+class SymbolDeclarationNode(AstNode):
     def __init__(self, token: Token) -> None:
         super().__init__(type=AstNodeType.SYMBOL_DECLARATION)
         self.token = token
