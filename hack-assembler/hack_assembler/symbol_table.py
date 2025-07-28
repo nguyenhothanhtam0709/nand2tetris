@@ -24,4 +24,4 @@ class SymbolTable(object):
         self._symbols[symbol.name] = symbol
 
     def lookup(self, name: str) -> Symbol | None:
-        return self._symbols[name]
+        return self._symbols.get(name)
