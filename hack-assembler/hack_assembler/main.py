@@ -1,4 +1,5 @@
-from lexer import Lexer, TokenType
+from hack_assembler.lexer import Lexer
+from hack_assembler.tokens import TokenType
 
 if __name__ == '__main__':
     code = """@R0
