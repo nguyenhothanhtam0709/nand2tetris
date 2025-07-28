@@ -6,7 +6,7 @@ from hack_assembler.lexer import Lexer
 from hack_assembler.tokens import TokenType
 from hack_assembler.parser import Parser
 from hack_assembler.semantic_analyzer import SemanticAnalyzer
-from hack_assembler.translator import Translator
+from hack_assembler.code_generator import CodeGenerator
 
 
 def main() -> None:
@@ -38,11 +38,11 @@ def main() -> None:
 
         symbol_table = sematic_analyzer.analyze()
 
-        translator = Translator(
+        code_generator = CodeGenerator(
             ast=ast,
             symbol_table=symbol_table
         )
-        machine_code = translator.translate()
+        machine_code = code_generator.generate_binary_code()
 
         with open(Path(output_file_path).resolve(), "w") as outfile:
             outfile.write(machine_code)

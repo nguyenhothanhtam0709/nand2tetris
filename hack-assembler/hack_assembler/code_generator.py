@@ -5,7 +5,7 @@ from hack_assembler.constants import DEST_MNEMONICS_TABLE, COMP_MNEMONICS_TABLE,
 from hack_assembler.tokens import TokenType
 
 
-class Translator(NodeVisitor):
+class CodeGenerator(NodeVisitor):
     """
     Translate AST of input assembly code into machine code
     """
@@ -17,7 +17,7 @@ class Translator(NodeVisitor):
         self._symbol_table = symbol_table
         self._allocatable_mem_ptr = 16
 
-    def translate(self) -> str:
+    def generate_binary_code(self) -> str:
         return self._visit(self._ast)
 
     def _visit_ProgramNode(self, node: ProgramNode) -> str:
