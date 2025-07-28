@@ -1,5 +1,8 @@
+from typing import cast
+import json
 from hack_assembler.lexer import Lexer
-from hack_assembler.tokens import TokenType
+from hack_assembler.parser import Parser
+from hack_assembler.ast import ProgramNode
 
 if __name__ == '__main__':
     code = """@R0
@@ -26,9 +29,8 @@ if __name__ == '__main__':
     lexer = Lexer(
         text=code
     )
+    parser = Parser(lexer=lexer)
 
-    token = lexer.get_next_token()
-    while token.type != TokenType.EOF:
-        print(token)
-        token = lexer.get_next_token()
-    print(token)
+    node = parser.parse()
+    print(node)
+    
