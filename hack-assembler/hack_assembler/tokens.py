@@ -17,9 +17,18 @@ class TokenType(Enum):
 
 
 class Token(object):
-    def __init__(self, type: TokenType, value: int | str):
+    def __init__(self,
+                 type: TokenType,
+                 value: int | str,
+                 line: int | None = None,
+                 column: int | None = None):
+
         self.type = type
         self.value = value
+        self.line = line
+        self.column = column
 
     def __str__(self) -> str:
-        return f'Token({self.type.value})' if self.type in [TokenType.EOL, TokenType.EOF] else f'Token({self.type.value}, \'{self.value}\')'
+        token_str = self.type.value if self.type in [
+            TokenType.EOL, TokenType.EOF] else f'{self.type.value}, \'{self.value}\''
+        return f'Token({token_str}, line {self.line}, column {self.column})'

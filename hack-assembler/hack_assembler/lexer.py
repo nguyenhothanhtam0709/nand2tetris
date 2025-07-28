@@ -1,9 +1,6 @@
 from hack_assembler.constants import MNEMONICS
 from hack_assembler.tokens import Token, TokenType
-
-
-class LexerError(Exception):
-    pass
+from hack_assembler.errors import LexerError
 
 
 class Lexer(object):
@@ -16,6 +13,9 @@ class Lexer(object):
         self._current_char: str | None = self._text[self._pos]
         """Current character"""
 
+        self._current_line: int = 1
+        self._current_column: int = 1
+
     def _is_valid_subsequent_symbol_char(self, char: str) -> bool:
         return char is not None and char.isalnum() or char in ['_', '.', '$', ':']
 
@@ -23,11 +23,16 @@ class Lexer(object):
         """
         Advance the **pos** pointer and set the **current_char** variable.
         """
+        if self._current_char == '\n':
+            self._current_column = 0
+            self._current_line += 1
+
         self._pos += 1
         if (self._pos > len(self._text) - 1):
             self._current_char = None
         else:
             self._current_char = self._text[self._pos]
+            self._current_column += 1
 
     def _peek(self, n: int = 1) -> str | None:
         """
@@ -48,13 +53,20 @@ class Lexer(object):
             self._advance()
 
     def _integer(self) -> Token:
+        line = self._current_line
+        column = self._current_column
         char = ''
         while self._current_char is not None and self._current_char.isdigit():
             char += self._current_char
             self._advance()
-        return Token(type=TokenType.INTEGER, value=char)
+        return Token(type=TokenType.INTEGER,
+                     value=char,
+                     line=line,
+                     column=column)
 
     def _symbol(self) -> Token:
+        line = self._current_line
+        column = self._current_column
         char = ''
         while self._current_char is not None and self._is_valid_subsequent_symbol_char(self._current_char):
             char += self._current_char
@@ -62,7 +74,9 @@ class Lexer(object):
 
         return Token(
             type=TokenType.SYMBOL,
-            value=char
+            value=char,
+            line=line,
+            column=column
         )
 
     def get_next_token(self) -> Token:
@@ -74,12 +88,16 @@ class Lexer(object):
         """
         while self._current_char is not None:
             if self._current_char == '\n':
+                line = self._current_line
+                column = self._current_column
                 char = self._current_char
                 self._advance()
 
                 return Token(
                     type=TokenType.EOL,
-                    value=char
+                    value=char,
+                    line=line,
+                    column=column
                 )
 
             if self._current_char.isspace():
@@ -94,24 +112,49 @@ class Lexer(object):
                 continue
 
             if self._current_char == '@':
+                line = self._current_line
+                column = self._current_column
                 self._advance()
-                return Token(type=TokenType.AT_SIGN, value='@')
+                return Token(type=TokenType.AT_SIGN,
+                             value='@',
+                             line=line,
+                             column=column)
 
             if self._current_char == '(':
+                line = self._current_line
+                column = self._current_column
                 self._advance()
-                return Token(type=TokenType.LPAREN, value='(')
+                return Token(type=TokenType.LPAREN,
+                             value='(',
+                             line=line,
+                             column=column)
 
             if self._current_char == ')':
+                line = self._current_line
+                column = self._current_column
                 self._advance()
-                return Token(type=TokenType.RPAREN, value=')')
+                return Token(type=TokenType.RPAREN,
+                             value=')',
+                             line=line,
+                             column=column)
 
             if self._current_char == '=':
+                line = self._current_line
+                column = self._current_column
                 self._advance()
-                return Token(type=TokenType.EQUAL_SIGN, value='=')
+                return Token(type=TokenType.EQUAL_SIGN,
+                             value='=',
+                             line=line,
+                             column=column)
 
             if self._current_char == ';':
+                line = self._current_line
+                column = self._current_column
                 self._advance()
-                return Token(type=TokenType.SEMICOLON, value=';')
+                return Token(type=TokenType.SEMICOLON,
+                             value=';',
+                             line=line,
+                             column=column)
 
             # region Handle mnemonics
             if (
@@ -127,13 +170,18 @@ class Lexer(object):
                     )
                 )
             ):
+                line = self._current_line
+                column = self._current_column
                 char = self._current_char
                 self._advance()
                 char += self._current_char
                 self._advance()
                 char += self._current_char
                 self._advance()
-                return Token(type=TokenType.MNEMONIC, value=char)
+                return Token(type=TokenType.MNEMONIC,
+                             value=char,
+                             line=line,
+                             column=column)
 
             if (
                 self._peek() is not None and
@@ -148,11 +196,16 @@ class Lexer(object):
                     )
                 )
             ):
+                line = self._current_line
+                column = self._current_column
                 char = self._current_char
                 self._advance()
                 char += self._current_char
                 self._advance()
-                return Token(type=TokenType.MNEMONIC, value=char)
+                return Token(type=TokenType.MNEMONIC,
+                             value=char,
+                             line=line,
+                             column=column)
 
             if (
                 (self._current_char in ['0', '1']
@@ -162,9 +215,14 @@ class Lexer(object):
                         'A', 'M', 'D'] and not self._is_valid_subsequent_symbol_char(self._peek())
                 )
             ):
+                line = self._current_line
+                column = self._current_column
                 char = self._current_char
                 self._advance()
-                return Token(type=TokenType.MNEMONIC, value=char)
+                return Token(type=TokenType.MNEMONIC,
+                             value=char,
+                             line=line,
+                             column=column)
             # endregion
 
             if self._current_char.isdigit():
@@ -174,7 +232,10 @@ class Lexer(object):
                 return self._symbol()
 
             raise LexerError(
-                message=f'Lexer error on character \'{self._current_char}\''
+                message=f'Lexer error on character \'{self._current_char}\' at line {self._current_line}, column {self._current_column}'
             )
 
-        return Token(type=TokenType.EOF, value='')
+        return Token(type=TokenType.EOF,
+                     value='',
+                     line=self._current_line,
+                     column=self._current_column)
