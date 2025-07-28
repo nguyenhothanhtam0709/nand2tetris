@@ -31,3 +31,6 @@ class SemanticAnalyzer(NodeVisitor):
         if self._symbol_table.lookup(node.token.value) is None:
             self._symbol_table.define(DeclaredSymbol(
                 name=node.token.value, value=self._current_line+1))
+        else:
+            # raise duplicated symbol error
+            pass
