@@ -7,7 +7,7 @@ from hack_assembler.tokens import TokenType
 
 class CodeGenerator(NodeVisitor):
     """
-    Translate AST of input assembly code into machine code
+    Generate Hack machine code from AST of Hack assembly language
     """
 
     def __init__(self, ast: ProgramNode, symbol_table: SymbolTable):
