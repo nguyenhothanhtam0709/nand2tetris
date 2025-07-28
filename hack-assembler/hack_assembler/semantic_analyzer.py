@@ -7,6 +7,7 @@ class SemanticAnalyzer(NodeVisitor):
     def __init__(self, ast: ProgramNode):
         super().__init__()
         self._ast = ast
+        self._current_line: int = 0
         self._symbol_table = SymbolTable()
 
     def analyze(self) -> SymbolTable:
