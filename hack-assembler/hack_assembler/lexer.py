@@ -47,7 +47,7 @@ class Lexer(object):
             return self._text[peek_pos]
 
     def _skip_white_space(self) -> None:
-        while self._current_char is not None and self._current_char.isspace():
+        while self._current_char is not None and self._current_char.isspace() and self._current_char != '\n':
             self._advance()
 
     def _skip_one_line_comment(self) -> None:
@@ -157,7 +157,7 @@ class Lexer(object):
                              value=';',
                              line=line,
                              column=column)
-            
+
             if self._current_char.isdigit() and self._pre_char == '@':
                 return self._integer()
 
