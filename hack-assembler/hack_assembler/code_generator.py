@@ -26,7 +26,7 @@ class CodeGenerator(NodeVisitor):
             c = self._visit(instruction)
             if c is not None:
                 machine_codes += f'\n{c}'
-        return machine_codes
+        return machine_codes.strip()
 
     def _visit_AInstructionNode(self, node: AInstructionNode) -> str:
         return f'0{(self._resolve_symbol_to_value(node.token.value) if node.token.type == TokenType.SYMBOL else node.token.value):015b}'
