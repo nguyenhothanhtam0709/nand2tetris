@@ -37,7 +37,8 @@ class Parser(object):
                     # A instruction
                     self._eat(TokenType.AT_SIGN)
                     token = self._current_token
-                    self._eat(TokenType.SYMBOL)
+                    self._eat(TokenType.INTEGER if self._current_token.type ==
+                              TokenType.INTEGER else TokenType.SYMBOL)
                     instructions.append(AInstructionNode(token=token))
 
                 case TokenType.MNEMONIC:

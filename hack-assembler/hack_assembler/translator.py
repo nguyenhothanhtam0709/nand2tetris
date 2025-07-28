@@ -2,6 +2,7 @@ from hack_assembler.ast_visitor import NodeVisitor
 from hack_assembler.ast import ProgramNode, AInstructionNode, CInstructionNode, SymbolDeclarationNode
 from hack_assembler.symbol_table import SymbolTable, DeclaredSymbol, Symbol
 from hack_assembler.constants import DEST_MNEMONICS_TABLE, COMP_MNEMONICS_TABLE, JUMP_MNEMONICS_TABLE
+from hack_assembler.tokens import TokenType
 
 
 class Translator(NodeVisitor):
@@ -28,7 +29,7 @@ class Translator(NodeVisitor):
         return machine_codes
 
     def _visit_AInstructionNode(self, node: AInstructionNode) -> str:
-        return f'0{self._resolve_symbol_to_value(node.token.value):015b}'
+        return f'0{(self._resolve_symbol_to_value(node.token.value) if node.token.type == TokenType.SYMBOL else node.token.value):015b}'
 
     def _visit_CInstructionNode(self, node: CInstructionNode) -> str:
         return f'111{COMP_MNEMONICS_TABLE[node.comp.value]}{DEST_MNEMONICS_TABLE[node.dest.value if node.dest is not None else None]}{JUMP_MNEMONICS_TABLE[node.jump.value if node.jump is not None else None]}'

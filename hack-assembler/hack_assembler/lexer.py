@@ -10,6 +10,7 @@ class Lexer(object):
         self._pos: int = 0
         """Current character's index"""
 
+        self._pre_char: str | None = None
         self._current_char: str | None = self._text[self._pos]
         """Current character"""
 
@@ -28,6 +29,7 @@ class Lexer(object):
             self._current_line += 1
 
         self._pos += 1
+        self._pre_char = self._current_char
         if (self._pos > len(self._text) - 1):
             self._current_char = None
         else:
@@ -60,7 +62,7 @@ class Lexer(object):
             char += self._current_char
             self._advance()
         return Token(type=TokenType.INTEGER,
-                     value=char,
+                     value=int(char),
                      line=line,
                      column=column)
 
@@ -155,6 +157,9 @@ class Lexer(object):
                              value=';',
                              line=line,
                              column=column)
+            
+            if self._current_char.isdigit() and self._pre_char == '@':
+                return self._integer()
 
             # region Handle mnemonics
             if (
@@ -224,9 +229,6 @@ class Lexer(object):
                              line=line,
                              column=column)
             # endregion
-
-            if self._current_char.isdigit():
-                return self._integer()
 
             if self._current_char.isalpha() or self._current_char in ['_', '.', '$', ':']:
                 return self._symbol()
