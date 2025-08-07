@@ -27,8 +27,8 @@ class CodeGenerator(NodeVisitor):
 
     def _visit_ArithLogicCmdNode(self, node: ArithLogicCmdNode) -> str:
         cmd = node.cmd
+        # region Unary arithmetic/logic command
         if cmd.value in [VMCommand.NEG.value, VMCommand.NOT.value]:
-            # Unary arithmetic/logic command
             return f"""
 // {cmd.value}
 @{SP}
@@ -41,8 +41,9 @@ M=D
 @{SP}
 M=M+1
 """.strip()
+        # endregion
 
-        # Binary arithmetic/logic command
+        # region Binary arithmetic/logic command
         asm_code = f"""
 // {cmd.value}
 @{SP}
@@ -54,6 +55,7 @@ M=M-1
 A=M
 """.strip()
 
+        # region gt, lt, eq
         if cmd.value in [VMCommand.GT.value, VMCommand.LT.value, VMCommand.EQ.value]:
             label_id = uuid4()
             TRUE_BRANCH_SYMBOL = f'{cmd.value.upper()}_TRUE_{label_id}'
@@ -96,6 +98,7 @@ M=-1
 @{SP}
 M=M+1
 """.strip()
+        # endregion
 
         # region add, sub, and, or
         al_sym = ''
@@ -114,6 +117,8 @@ M=M+1
 @{SP}
 M=M+1
 """.strip()
+     # endregion
+     # endregion
 
     def _visit_StackCmdNode(self, node: StackCmdNode) -> str:
         cmd = node.cmd
